@@ -3,10 +3,10 @@ sys.path.append(".")
 import torch
 import torch.nn as nn
 from torch.distributions import Normal
+
+
 from dataset.dataloader import PrepareDataloader
 from config import Config
-
-
 from modules import Encoder, Decoder
 
 # torch.set_default_dtype(torch.float64)
@@ -33,7 +33,7 @@ class UnnamedModel(nn.Module):
 
         rna_generated, atac_generated = self.decoder(latent)
         
-        return latent, rna_generated, atac_generated
+        return latent, rna_generated, atac_generated, mean, var
 
 
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         # x = x.to(config.device)
         # y = y.to(config.device)
         latent, rna_generated, atac_generated = model(x, y)
-        # print(latent)
-        # print(rna_generated)
-        # print(atac_generated)
-        # break    
+        print(latent.shape)
+        print(rna_generated.shape)
+        print(atac_generated.shape)
+        break    

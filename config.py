@@ -36,4 +36,5 @@ class Config:
                 "atac_barcodes": 'data/SNAREseq/CellLineMixture/atac_barcodes.txt'
             }
             self.batch_size = 128
+            self.epochs = 50
         

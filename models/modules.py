@@ -3,6 +3,8 @@ sys.path.append(".")
 import torch
 import torch.nn as nn
 from torch.distributions import Normal
+
+
 from dataset.dataloader import PrepareDataloader
 from config import Config
 
@@ -128,10 +130,7 @@ class Decoder_rna(nn.Module):
         self.multiheadAttention = nn.MultiheadAttention(embed_dim, num_heads)
         self.MLP2 = nn.Sequential(
             nn.Linear(embed_dim, input_dim),
-            nn.LayerNorm(input_dim, eps=0.0001),
-            nn.BatchNorm1d(input_dim, momentum=0.01, eps=0.0001),
-            nn.LeakyReLU(),
-            nn.Dropout(p=dropout_rate)
+            nn.Sigmoid()
         )
     
     def forward(self, latent):
@@ -157,10 +156,7 @@ class Decoder_atac(nn.Module):
         self.multiheadAttention = nn.MultiheadAttention(embed_dim, num_heads)
         self.MLP2 = nn.Sequential(
             nn.Linear(embed_dim, input_dim),
-            nn.LayerNorm(input_dim, eps=0.0001),
-            nn.BatchNorm1d(input_dim, momentum=0.01, eps=0.0001),
-            nn.LeakyReLU(),
-            nn.Dropout(p=dropout_rate)
+            nn.Sigmoid()
         )
     
     def forward(self, latent):
