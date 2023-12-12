@@ -15,8 +15,10 @@ class UnnamedModel(nn.Module):
     def __init__(self, rna_input_dim, atac_input_dim, rna_embed_dim=512, rna_num_heads=8, rna_n_hidden=128, rna_dropout_rate=0.1,  
                  atac_embed_dim=512, atac_num_heads=8, atac_n_hidden=128, atac_dropout_rate=0.1, latent_dim=20):
         super(UnnamedModel, self).__init__()
-        self.encoder = Encoder(rna_input_dim, atac_input_dim)
-        self.decoder = Decoder(rna_input_dim, atac_input_dim)
+        self.encoder = Encoder(rna_input_dim, atac_input_dim, rna_embed_dim, rna_num_heads, rna_n_hidden, rna_dropout_rate,  
+                 atac_embed_dim, atac_num_heads, atac_n_hidden, atac_dropout_rate, latent_dim)
+        self.decoder = Decoder(rna_input_dim, atac_input_dim, rna_embed_dim, rna_num_heads, rna_n_hidden, rna_dropout_rate,  
+                 atac_embed_dim, atac_num_heads, atac_n_hidden, atac_dropout_rate, latent_dim)
     
     def reparameterize_gaussian(self, mu, var):
         
