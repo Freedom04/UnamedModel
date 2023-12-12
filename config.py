@@ -35,5 +35,5 @@ class Config:
                 "atac_expression": 'data/SNAREseq/CellLineMixture/atac_expression.mtx',
                 "atac_barcodes": 'data/SNAREseq/CellLineMixture/atac_barcodes.txt'
             }
-            self.batch_size = 256
+            self.batch_size = 128
         
