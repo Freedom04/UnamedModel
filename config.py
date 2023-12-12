@@ -1,10 +1,13 @@
 import torch
-
+import os
 
 class Config:
     def __init__(self) -> None:
         self.dataset = "SNAREseq_cellLineMixture"
         self.use_cuda = True
+        os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1, 2"
+        self.device_ids = [0, 1, 2]
         if not self.use_cuda:
             self.device = torch.device('cpu')
         else:
