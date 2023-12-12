@@ -148,6 +148,8 @@ class PrepareDataloader:
     def getloader(self):
         return self.train_loader, self.test_loader, self.rna_input_size, self.atac_input_size, int(self.num_of_cell/self.config.batch_size)
 
+    def gettestdata(self):
+        return self.joint_profiles['gene_expression'], self.joint_profiles['atac_expression']
 
 if __name__ == "__main__":
     config = Config()

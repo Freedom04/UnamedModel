@@ -2,18 +2,22 @@ import torch
 import torch.nn as nn
 from torch.distributions import Normal
 from torch.optim import Adam
+import numpy as np
+
 
 from dataset.dataloader import PrepareDataloader
 from config import Config
 from models.model import UnnamedModel
 from models.loss import loss_function
+from dataset.dataloader import read_mtx
 
 
 def main():
     config = Config()
-    train_loader, test_loader, rna_input_size, atac_input_size, num_of_batch = PrepareDataloader(config).getloader()
+    prepareDataloader = PrepareDataloader(config)
+    train_loader, test_loader, rna_input_size, atac_input_size, num_of_batch = prepareDataloader.getloader()
 
-    model = UnnamedModel(rna_input_size, atac_input_size).to(config.device).double()
+    model = UnnamedModel(rna_input_size, atac_input_size, latent_dim=10).to(config.device).double()
     
     print(f"the number of batch is {num_of_batch}")
 
@@ -41,8 +45,18 @@ def main():
             
             loss.backward()
             optimizer.step()
-
         print("\tEpoch", epoch + 1, "\tAverage Loss: ", overall_loss/(step * config.batch_size))    
+    
+    model.eval()
+    rna, atac = prepareDataloader.gettestdata()
+    rna = torch.from_numpy(rna.todense()).to(config.device)
+    atac = torch.from_numpy(atac.todense()).to(config.device)
+    latent, rna_generated, atac_generated, mean, var= model(rna, atac)
+    latent = latent.cpu()
+    latent = latent.detach().numpy()
+    np.savetxt("latent.txt", latent)
+
+
 
 
 if __name__ == "__main__":
