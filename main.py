@@ -9,7 +9,6 @@ from dataset.dataloader import PrepareDataloader
 from config import Config
 from models.model import UnnamedModel
 from models.loss import loss_function
-from dataset.dataloader import read_mtx
 
 
 def main():
