@@ -24,7 +24,7 @@ def main():
         print("Let's use", torch.cuda.device_count(), "GPUs!")
         model = torch.nn.DataParallel(model, device_ids=config.device_ids)
     
-    optimizer = Adam(model.parameters(), lr=1e-4)
+    optimizer = Adam(model.parameters(), lr=1e-3)
     
     model.train()
     for epoch in range(config.epochs):
@@ -37,8 +37,7 @@ def main():
 
             latent, rna_generated, atac_generated, mean, var= model(x, y)
             
-            loss = loss_function(x, rna_generated, mean, var)
-            loss += loss_function(y, atac_generated, mean, var)
+            loss = loss_function(x, rna_generated, y, atac_generated, mean, var)
             
             overall_loss += loss.item()
             
@@ -46,6 +45,7 @@ def main():
             optimizer.step()
         print("\tEpoch", epoch + 1, "\tAverage Loss: ", overall_loss/(step * config.batch_size))    
     
+
     model.eval()
     rna, atac = prepareDataloader.gettestdata()
     rna = torch.from_numpy(rna.todense()).to(config.device)
