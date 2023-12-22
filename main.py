@@ -40,7 +40,7 @@ def main():
             loss = loss_function(x, rna_generated, y, atac_generated, mean, var)
             
             overall_loss += loss.item()
-            
+
             loss.backward()
             optimizer.step()
         print("\tEpoch", epoch + 1, "\tAverage Loss: ", overall_loss/(step * config.batch_size))    

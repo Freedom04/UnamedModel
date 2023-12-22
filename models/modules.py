@@ -46,7 +46,7 @@ class Encoder_rna(nn.Module):
         attn_output, attn_output_weights = self.multiheadAttention(output, output, output)
         output = self.MLP2(attn_output)
         mean = self.mean_encoder(output)
-        var = torch.exp(self.var_encoder(output)) + 1e-4
+        var = self.var_encoder(output)
         return output, mean, var
     
 
@@ -82,7 +82,7 @@ class Encoder_atac(nn.Module):
         attn_output, attn_output_weights = self.multiheadAttention(output, output, output)
         output = self.MLP2(attn_output)
         mean = self.mean_encoder(output)
-        var = torch.exp(self.var_encoder(output)) + 1e-4
+        var = self.var_encoder(output)
 
         return output, mean, var
     
@@ -109,7 +109,7 @@ class Encoder(nn.Module):
         
         # calculate mean and variance
         mean = self.mean_encoder(output)
-        var = torch.exp(self.var_encoder(output)) + 1e-4
+        var = self.var_encoder(output)
         
         
         return mean, var
@@ -130,7 +130,8 @@ class Decoder_rna(nn.Module):
         self.multiheadAttention = nn.MultiheadAttention(embed_dim, num_heads)
         self.MLP2 = nn.Sequential(
             nn.Linear(embed_dim, input_dim),
-            nn.Sigmoid()
+            nn.Tanh()
+            # nn.Sigmoid()
         )
     
     def forward(self, latent):
@@ -156,7 +157,8 @@ class Decoder_atac(nn.Module):
         self.multiheadAttention = nn.MultiheadAttention(embed_dim, num_heads)
         self.MLP2 = nn.Sequential(
             nn.Linear(embed_dim, input_dim),
-            nn.Sigmoid()
+            nn.Tanh()
+            # nn.Sigmoid()
         )
     
     def forward(self, latent):
